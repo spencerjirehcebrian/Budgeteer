@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
+
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -12,8 +13,7 @@
         android:theme="@style/Theme.Budgeteer"
         tools:targetApi="31">
         <activity
-            android:name=".FullscreenActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:name=".GetStartedActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.Budgeteer.Fullscreen">
@@ -23,6 +23,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".GetStarted2Activity"
+            android:exported="true"/>
+        <activity
+            android:name=".OptionActivity"
+            android:exported="true"/>
+        <activity
+            android:name=".CalculatorActivity"
+            android:exported="true"/>
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="true"/>
+        <activity
+            android:name=".HistoryActivity"
+            android:exported="true"/>
     </application>
 
 </manifest>

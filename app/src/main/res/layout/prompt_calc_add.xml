@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/prompt_bg">
+
+    <Button
+        android:id="@+id/btn_add_class"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:text="Classification"
+        android:fontFamily="@font/montserratregular"
+        android:textAllCaps="false"
+        android:gravity="left"
+        android:textSize="23sp"
+        android:drawableEnd="@drawable/calc_path"
+        android:background="@drawable/bottom_border"
+        android:textColor="@color/black"
+        android:backgroundTint="@color/black"
+        />
+
+    <Button
+        android:id="@+id/btn_add_budget"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+
+        android:text="Amount of Budget"
+        android:fontFamily="@font/montserratregular"
+        android:textAllCaps="false"
+        android:gravity="left"
+        android:textSize="23sp"
+        android:drawableEnd="@drawable/calc_path"
+        android:background="@drawable/bottom_border"
+        android:textColor="@color/black"
+        android:backgroundTint="@color/black"
+        />
+
+</LinearLayout>

@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/option_back"
+        android:scaleType="centerCrop"
+        />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:minHeight="70dp"
+        android:text="Select An Option"
+        android:gravity="center"
+        android:autoSizeTextType="uniform"
+        android:fontFamily="@font/montserratsemibold"
+
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="40dp"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+
+    <ImageView
+        android:id="@+id/bar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/option_rectang"
+
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="40dp"
+        android:alpha=".65"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+
+
+    <FrameLayout
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bar"
+        app:layout_constraintBottom_toTopOf="@+id/lyt_btn_hist"
+
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/lyt_btn_calc"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+
+        <ImageButton
+            android:id="@+id/btn_calc"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#00FFFFFF"
+            android:scaleType="fitCenter"
+            android:src="@drawable/option_rect"></ImageButton>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:clickable="false"
+            android:fontFamily="@font/montserratsemibold"
+            android:text="Calculator"
+            android:textSize="25sp"/>
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/img_calc"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="15dp"
+        android:src="@drawable/option_calc"
+
+        app:layout_constraintLeft_toLeftOf="@+id/lyt_btn_calc"
+        app:layout_constraintTop_toTopOf="@+id/lyt_btn_calc"
+        app:layout_constraintBottom_toBottomOf="@+id/lyt_btn_calc"/>
+
+    <FrameLayout
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lyt_btn_calc"
+        app:layout_constraintBottom_toTopOf="@+id/lyt_btn_set"
+
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/lyt_btn_hist"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+        <ImageButton
+            android:id="@+id/btn_hist"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:background="#00FFFFFF"
+            android:src="@drawable/option_rect">
+        </ImageButton>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:clickable="false"
+            android:fontFamily="@font/montserratsemibold"
+            android:text="History"
+            android:textSize="25sp"/>
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/img_hist"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="15dp"
+        android:src="@drawable/option_hist"
+
+        app:layout_constraintLeft_toLeftOf="@+id/lyt_btn_hist"
+        app:layout_constraintTop_toTopOf="@+id/lyt_btn_hist"
+        app:layout_constraintBottom_toBottomOf="@+id/lyt_btn_hist"/>
+
+    <FrameLayout
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lyt_btn_hist"
+        app:layout_constraintBottom_toTopOf="@+id/lyt_btn_logout"
+
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/lyt_btn_set"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+        <ImageButton
+            android:id="@+id/btn_set"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:background="#00FFFFFF"
+            android:src="@drawable/option_rect">
+        </ImageButton>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:clickable="false"
+            android:fontFamily="@font/montserratsemibold"
+            android:text="Settings"
+            android:textSize="25sp"/>
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/img_set"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="15dp"
+        android:src="@drawable/option_set"
+
+        app:layout_constraintLeft_toLeftOf="@+id/lyt_btn_set"
+        app:layout_constraintTop_toTopOf="@+id/lyt_btn_set"
+        app:layout_constraintBottom_toBottomOf="@+id/lyt_btn_set"/>
+
+
+    <FrameLayout
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lyt_btn_set"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginBottom="40dp"
+        android:id="@+id/lyt_btn_logout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+        <ImageButton
+            android:id="@+id/btn_logout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:background="#00FFFFFF"
+            android:src="@drawable/option_rect">
+        </ImageButton>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:clickable="false"
+            android:fontFamily="@font/montserratsemibold"
+            android:text="Log Out"
+            android:textSize="25sp"/>
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/img_logout"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="15dp"
+        android:src="@drawable/option_logout"
+
+        app:layout_constraintLeft_toLeftOf="@+id/lyt_btn_logout"
+        app:layout_constraintTop_toTopOf="@+id/lyt_btn_logout"
+        app:layout_constraintBottom_toBottomOf="@+id/lyt_btn_logout"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        android:layout_marginRight="15dp"
+        android:src="@drawable/option_vector"
+
+        app:layout_constraintRight_toRightOf="@+id/lyt_btn_logout"
+        app:layout_constraintTop_toTopOf="@+id/lyt_btn_logout"
+        app:layout_constraintBottom_toBottomOf="@+id/lyt_btn_logout"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        android:layout_marginRight="15dp"
+        android:src="@drawable/option_vector"
+
+        app:layout_constraintRight_toRightOf="@+id/lyt_btn_hist"
+        app:layout_constraintTop_toTopOf="@+id/lyt_btn_hist"
+        app:layout_constraintBottom_toBottomOf="@+id/lyt_btn_hist"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        android:layout_marginRight="15dp"
+        android:src="@drawable/option_vector"
+
+        app:layout_constraintRight_toRightOf="@+id/lyt_btn_calc"
+        app:layout_constraintTop_toTopOf="@+id/lyt_btn_calc"
+        app:layout_constraintBottom_toBottomOf="@+id/lyt_btn_calc"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        android:layout_marginRight="15dp"
+        android:src="@drawable/option_vector"
+
+        app:layout_constraintRight_toRightOf="@+id/lyt_btn_set"
+        app:layout_constraintTop_toTopOf="@+id/lyt_btn_set"
+        app:layout_constraintBottom_toBottomOf="@+id/lyt_btn_set"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

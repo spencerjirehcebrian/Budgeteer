@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/img_card"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:scaleType="centerInside"
+            android:src="@drawable/trans_card"
+
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+
+            android:background="#00FFFFFF"/>
+
+        <ImageView
+            android:id="@+id/img_cal"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginRight="20dp"
+            android:scaleType="centerInside"
+
+            android:src="@drawable/trans_cal"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="6dp"
+            app:layout_constraintLeft_toLeftOf="@id/img_card"
+            app:layout_constraintTop_toBottomOf="@+id/card_text"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <ImageView
+            android:id="@+id/img_rect"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginRight="110dp"
+            android:scaleType="centerInside"
+
+            android:src="@drawable/trans_rect"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/img_card"
+            app:layout_constraintRight_toRightOf="@+id/img_card"
+            app:layout_constraintTop_toTopOf="@+id/img_card" />
+
+
+        <TextView
+            android:id="@+id/card_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Personal"
+            android:textAlignment="center"
+            android:textSize="17sp"
+            android:fontFamily="@font/poppinsbold"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toTopOf="@id/img_card"
+            app:layout_constraintLeft_toLeftOf="@id/img_card"
+            />
+
+        <TextView
+            android:id="@+id/date_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="3/28/2023"
+            android:textAlignment="center"
+            android:textSize="13sp"
+            android:fontFamily="@font/robotoregular"
+
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="5dp"
+            app:layout_constraintTop_toBottomOf="@id/card_text"
+            app:layout_constraintLeft_toRightOf="@id/img_cal"
+            />
+
+        <TextView
+            android:id="@+id/time_text"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="5:14 PM"
+            android:textAlignment="center"
+            android:textSize="13sp"
+            android:fontFamily="@font/robotoregular"
+
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            app:layout_constraintTop_toBottomOf="@id/card_text"
+            app:layout_constraintLeft_toRightOf="@id/date_text"
+            />
+
+        <TextView
+            android:id="@+id/amount_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="+250.00"
+            android:gravity="right"
+            android:textSize="17sp"
+            android:fontFamily="@font/poppinsbold"
+            android:textColor="#3B8D5A"
+            android:layout_marginRight="20dp"
+            app:layout_constraintBottom_toBottomOf="@id/img_card"
+            app:layout_constraintTop_toTopOf="@id/img_card"
+            app:layout_constraintRight_toRightOf="@id/img_card"
+            />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

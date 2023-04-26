@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/prompt_bg">
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1">
+    <RadioButton
+        android:id="@+id/rdo_personal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layoutDirection="rtl"
+        android:layout_gravity="center"
+
+        android:text="Personal"
+        android:fontFamily="@font/montserratregular"
+        android:textAllCaps="false"
+        android:textSize="23sp"
+        android:background="@drawable/bottom_border"
+        android:textColor="@color/black"
+        android:backgroundTint="@color/black"
+        />
+
+    <RadioButton
+        android:id="@+id/rdo_savings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layoutDirection="rtl"
+        android:layout_gravity="center"
+
+        android:layout_marginTop="20dp"
+        android:text="Savings"
+        android:fontFamily="@font/montserratregular"
+        android:textAllCaps="false"
+        android:textSize="23sp"
+        android:background="@drawable/bottom_border"
+        android:textColor="@color/black"
+        android:backgroundTint="@color/black"
+        />
+
+    <RadioButton
+        android:id="@+id/rdo_insurance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layoutDirection="rtl"
+        android:layout_gravity="center"
+
+        android:layout_marginTop="20dp"
+        android:text="Insurance"
+        android:fontFamily="@font/montserratregular"
+        android:textAllCaps="false"
+        android:textSize="23sp"
+        android:background="@drawable/bottom_border"
+        android:textColor="@color/black"
+        android:backgroundTint="@color/black"
+        />
+
+    <RadioButton
+        android:id="@+id/rdo_bills"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layoutDirection="rtl"
+        android:layout_gravity="center"
+
+        android:layout_marginTop="20dp"
+        android:text="Bills"
+        android:fontFamily="@font/montserratregular"
+        android:textAllCaps="false"
+        android:textSize="23sp"
+        android:background="@drawable/bottom_border"
+        android:textColor="@color/black"
+        android:backgroundTint="@color/black"
+        />
+
+    <RadioButton
+        android:id="@+id/rdo_shoping"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layoutDirection="rtl"
+        android:layout_gravity="center"
+
+        android:layout_marginTop="20dp"
+        android:text="Shopping"
+        android:fontFamily="@font/montserratregular"
+        android:textAllCaps="false"
+        android:textSize="23sp"
+        android:background="@drawable/bottom_border"
+        android:textColor="@color/black"
+        android:backgroundTint="@color/black"
+        />
+
+    <RadioButton
+        android:id="@+id/rdo_others"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layoutDirection="rtl"
+        android:layout_gravity="center"
+
+        android:layout_marginTop="20dp"
+        android:text="Others"
+        android:fontFamily="@font/montserratregular"
+        android:textAllCaps="false"
+        android:textSize="23sp"
+        android:background="@drawable/bottom_border"
+        android:textColor="@color/black"
+        android:backgroundTint="@color/black"
+        />
+    </RadioGroup>
+
+
+
+
+
+</LinearLayout>
