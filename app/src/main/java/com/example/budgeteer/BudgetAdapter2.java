@@ -1,6 +1,18 @@
 package com.example.budgeteer;
 
+import static android.content.Context.MODE_PRIVATE;
+import static android.content.Context.NOTIFICATION_SERVICE;
+
+import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -12,10 +24,18 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RemoteViews;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.Guideline;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.lang.ref.WeakReference;
@@ -27,6 +47,11 @@ import java.util.Locale;
 
 
 public class BudgetAdapter2 extends RecyclerView.Adapter<BudgetAdapter2.UserViewHolder> {
+
+    private static final String CHANNEL_ID = "channel1";
+
+    private final int REQUEST_PERMISSION_PHONE_NOTIFCATION=8;
+
     private String globalEmail;
     private List<Budget> listBudget;
 
@@ -39,6 +64,15 @@ public class BudgetAdapter2 extends RecyclerView.Adapter<BudgetAdapter2.UserView
     private CalculatorDatabaseHelper databaseHelper;
     private TransactionDatabaseHelper databaseHelper2;
     private Transactions transactions;
+
+    private NotificationDatabaseHelper notificationDatabaseHelper;
+
+    private Notifications notifications;
+
+    private SharedPreferences loginPreferences;
+    private SharedPreferences.Editor loginPrefsEditor;
+
+    private Boolean notifOn;
 
 
     private final ClickListener listener;
@@ -62,10 +96,35 @@ public class BudgetAdapter2 extends RecyclerView.Adapter<BudgetAdapter2.UserView
         Integer budgetID = listBudget.get(position).getId();
 
         String curr_expenses = Integer.toString(listBudget.get(position).getExpenses());
+        String curr_budget = Integer.toString(listBudget.get(position).getMax());
 
         holder.hidden_text.setText(budgetID.toString());
 
         holder.hidden_text2.setText(curr_expenses);
+
+        holder.hidden_text3.setText(curr_budget);
+
+        double  m = listBudget.get(position).getExpenses();
+
+        double  e = listBudget.get(position).getMax();
+
+        double percentFloat = m/e;
+
+        double percentFloat2 = percentFloat * 100;
+
+        String finalFloat = String.format("%.0f",percentFloat2) +"%";
+
+        holder.mid_text.setText(finalFloat);
+
+        float f = (float) percentFloat;
+
+        f += 0.03;
+
+        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) holder.mid_guideline.getLayoutParams();
+        params.guidePercent = f; // 45% // range: 0 <-> 1
+        holder.mid_guideline.setLayoutParams(params);
+
+        //holder.mid_guideline.setGuidelinePercent(f);
 
         String classImage = listBudget.get(position).get_Class().toString();
 
@@ -81,11 +140,12 @@ public class BudgetAdapter2 extends RecyclerView.Adapter<BudgetAdapter2.UserView
             holder.img_budget_class.setImageResource(R.drawable.calc_budget);
         }
 
-        holder.max_text.setText(listBudget.get(position).getMax().toString());
+        holder.max_text.setText("P " + curr_budget);
 
         holder.progress.setMax(listBudget.get(position).getMax());
         holder.progress.setProgress(listBudget.get(position).getExpenses());
 
+        Log.d("meowy", finalFloat + ":" + Float.toString(f) +"-"+m+"-"+e);
 
     }
     @Override
@@ -97,17 +157,30 @@ public class BudgetAdapter2 extends RecyclerView.Adapter<BudgetAdapter2.UserView
      * ViewHolder class
      */
     public class UserViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView card_text, edit_text, max_text, zero_text, hidden_text, hidden_text2;
-        public ImageView img_card, img_budget_class;
+        public TextView card_text, edit_text, max_text, zero_text, hidden_text, hidden_text2, hidden_text3, mid_text;
+        public ImageView img_card, img_budget_class, mid_arrow;
         public ImageButton btn_edit;
+        public Guideline mid_guideline;
 
         public ProgressBar progress;
         private WeakReference<ClickListener> listenerRef;
 
+
+
+
         public UserViewHolder(View itemView) {
             super(itemView);
 
+            if (ActivityCompat.checkSelfPermission(itemView.getContext(), android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions((Activity) itemView.getContext(), new String[]{android.Manifest.permission.POST_NOTIFICATIONS},REQUEST_PERMISSION_PHONE_NOTIFCATION );
+                Log.d("lolololo", "startNotification: I already have permission?");
+                return;
+            }
 
+            loginPreferences = itemView.getContext().getSharedPreferences("loginPrefs", MODE_PRIVATE);
+            loginPrefsEditor = loginPreferences.edit();
+
+            createNotificationChannel(itemView);
             bundle2 = new Bundle();
 
             databaseHelper = new CalculatorDatabaseHelper(itemView.getContext());
@@ -116,7 +189,12 @@ public class BudgetAdapter2 extends RecyclerView.Adapter<BudgetAdapter2.UserView
             databaseHelper2 = new TransactionDatabaseHelper(itemView.getContext());
             transactions = new Transactions();
 
+            notificationDatabaseHelper = new NotificationDatabaseHelper(itemView.getContext());
+            notifications = new Notifications();
+
             listenerRef = new WeakReference<>(listener);
+
+            mid_guideline = (Guideline) itemView.findViewById(R.id.mid_guideline);
 
             progress = (ProgressBar) itemView.findViewById(R.id.progess);
 
@@ -126,9 +204,13 @@ public class BudgetAdapter2 extends RecyclerView.Adapter<BudgetAdapter2.UserView
             zero_text = (TextView) itemView.findViewById(R.id.zero_text);
             hidden_text = (TextView) itemView.findViewById(R.id.hidden_text);
             hidden_text2 = (TextView) itemView.findViewById(R.id.hidden_text2);
+            hidden_text3 = (TextView) itemView.findViewById(R.id.hidden_text3);
+            mid_text = (TextView) itemView.findViewById(R.id.mid_text);
 
             img_card = (ImageView) itemView.findViewById(R.id.img_card);
             img_budget_class = (ImageView) itemView.findViewById(R.id.img_budget_class);
+
+            mid_arrow = (ImageView) itemView.findViewById(R.id.mid_arrow);
 
             btn_edit = (ImageButton) itemView.findViewById(R.id.btn_edit);
 
@@ -150,7 +232,7 @@ public class BudgetAdapter2 extends RecyclerView.Adapter<BudgetAdapter2.UserView
                 String _class = ((TextView) itemView.findViewById(R.id.card_text)).getText().toString();
                 bundle2.putString("class", _class);
 
-                String budgetTemp = ((TextView) itemView.findViewById(R.id.max_text)).getText().toString();
+                String budgetTemp = ((TextView) itemView.findViewById(R.id.hidden_text3)).getText().toString();
                 int budgetTempInt = Integer.parseInt(budgetTemp);
                 bundle2.putInt("budget", budgetTempInt);
 
@@ -186,14 +268,18 @@ public class BudgetAdapter2 extends RecyclerView.Adapter<BudgetAdapter2.UserView
                         btn_okay_budget.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                String text2 = new_budget_text.getText().toString();
-                                int finalValue=Integer.parseInt(text2);
+                                try {
+                                    String text2 = new_budget_text.getText().toString();
+                                    int finalValue = Integer.parseInt(text2);
 
-                                bundle2.putInt("budget", finalValue);
-                                updateSQL(view);
+                                    bundle2.putInt("budget", finalValue);
+                                    updateSQL(view);
 
-                                newBudgetDialog.dismiss();
-                                editDialog.dismiss();
+                                    newBudgetDialog.dismiss();
+                                    editDialog.dismiss();
+                                } catch (Exception e) {
+                                    Toast.makeText(view.getContext(), "Missing Input",Toast.LENGTH_SHORT).show();
+                                }
                             }
                         });
                         newBudgetDialog.show();
@@ -218,23 +304,25 @@ public class BudgetAdapter2 extends RecyclerView.Adapter<BudgetAdapter2.UserView
                         btn_okay_expense.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
+                                try {
+                                    String text1 = new_expense_text.getText().toString();
+                                    int finalCurrentSum = Integer.parseInt(text1);
+                                    Integer testlol = bundle2.getInt("expenses");
+                                    int finalValue3 = finalCurrentSum + testlol;
 
-                                String text1 = new_expense_text.getText().toString();
-                                int finalCurrentSum = Integer.parseInt(text1);
-                                Integer testlol = bundle2.getInt("expenses");
-                                int finalValue3 = finalCurrentSum + testlol;
+                                    bundle2.putInt("expenses", finalValue3);
+                                    bundle2.putInt("transaction", finalCurrentSum);
 
-                                bundle2.putInt("expenses", finalValue3);
-                                bundle2.putInt("transaction", finalCurrentSum);
+                                    String tempemp = Integer.toString(finalValue3);
 
-                                String tempemp = Integer.toString(finalValue3);
+                                    updateSQL(view);
+                                    updateTransactionSQL(view);
 
-                                updateSQL(view);
-                                updateTransactionSQL(view);
-
-                                newExpenseDialog.dismiss();
-                                editDialog.dismiss();
-
+                                    newExpenseDialog.dismiss();
+                                    editDialog.dismiss();
+                                } catch (Exception e) {
+                                    Toast.makeText(view.getContext(), "Missing Input",Toast.LENGTH_SHORT).show();
+                                }
                             }
                         });
                         newExpenseDialog.show();
@@ -265,15 +353,10 @@ public class BudgetAdapter2 extends RecyclerView.Adapter<BudgetAdapter2.UserView
             budget.set_Class(_class);
             budget.setUserEmail(globalEmail);
             databaseHelper.updateBudget(budget, finalBudgetID);
-            Toast.makeText(view.getContext(), "Budget Updated", Toast.LENGTH_SHORT).show();
-
-
-            Intent backIntent = new Intent(view.getContext(), CalculatorActivity.class);
-            backIntent.putExtra("EMAIL", globalEmail);
-            view.getContext().startActivity(backIntent);
 
         } catch (Exception e) {
             Toast.makeText(view.getContext(), e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+            Log.d("notif_errr3", e.getMessage());
         }
     }
 
@@ -296,18 +379,139 @@ public class BudgetAdapter2 extends RecyclerView.Adapter<BudgetAdapter2.UserView
             transactions.set_Class(_class);
             transactions.setUserEmail(globalEmail);
             databaseHelper2.addTransaction(transactions);
-            Toast.makeText(view.getContext(), "Transaction Logged", Toast.LENGTH_SHORT).show();
 
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                updateNotificationSQL(view);
+            }
+
+        } catch (Exception e) {
+            Toast.makeText(view.getContext(), e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+            Log.d("notif_errr2", e.getMessage());
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void updateNotificationSQL(View view) {
+        String _class = bundle2.getString("class").toString();
+        int max = bundle2.getInt("budget");
+        int expenses = bundle2.getInt("expenses");
+        Integer finalBudgetID = bundle2.getInt("id");
+
+        float percentFloat = (float) expenses / (float) max;
+
+        float percentFloat2 = percentFloat * 100;
+
+        int roundedPercent = Math.round(percentFloat2);
+
+        bundle2.putInt("percent", roundedPercent);
+
+        Log.d("floop", "updateNotificationSQL: " +expenses+"/"+ max +"/"+ roundedPercent+"/"+ finalBudgetID);
+
+        Date c = Calendar.getInstance().getTime();
+
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        String formattedDate = df.format(c);
+
+        SimpleDateFormat tf = new SimpleDateFormat("hh:mm a", Locale.getDefault());
+        String formattedTime = tf.format(c);
+
+        try{
+            notifications.setBudgetID(finalBudgetID);
+            notifications.setPercent(roundedPercent);
+            notifications.setDate(formattedDate);
+            notifications.setTime(formattedTime);
+            notifications.set_Class(_class);
+            notifications.setUserEmail(globalEmail);
+            notificationDatabaseHelper.updateNotifications(notifications, finalBudgetID);
+            Toast.makeText(view.getContext(), "Changes Saved", Toast.LENGTH_SHORT).show();
+
+            notifOn = loginPreferences.getBoolean("useNotif", false);
+            if (notifOn == true) {
+                startNotification(view);
+                Log.d("wapopo", "updateNotificationSQL: yahooo" );
+            }
 
             Intent backIntent = new Intent(view.getContext(), CalculatorActivity.class);
             backIntent.putExtra("EMAIL", globalEmail);
             view.getContext().startActivity(backIntent);
 
-        } catch (Exception e) {
-            Toast.makeText(view.getContext(), e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+        } catch (Exception err) {
+            Toast.makeText(view.getContext(), err.getMessage().toString(), Toast.LENGTH_SHORT).show();
+            Log.d("notif_errr", err.getMessage());
         }
     }
+
     public interface ClickListener {
         void onPositionClicked(int position);
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void startNotification(View view) {
+
+        Integer percentage = bundle2.getInt("percent");
+        String percentageString = percentage.toString() + "%";
+        createNotificationChannel(view);
+        String classString = bundle2.getString("class");
+
+        Log.d("meowat", "startNotification: 1 " + percentage);
+
+//        String PkgName = BuildConfig.APPLICATION_ID;
+//        RemoteViews notificationLayout = new RemoteViews(PkgName, R.layout.notofication_test);
+
+        if (percentage >= 100) {
+
+            Log.d("meowat", "startNotification: 101");
+            String text = classString + " (" + percentageString +")";
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(view.getContext(), CHANNEL_ID)
+                    .setSmallIcon(R.drawable.notif_warn)
+                    .setContentTitle("Limit Exceeded")
+                    .setContentText(text)
+                    .setStyle(new NotificationCompat.BigTextStyle()
+                            .bigText("Much longer text that cannot fit one line..."))
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(view.getContext());
+
+            notificationManager.notify(8, builder.build());
+            Log.d("meowat", "startNotification: 100");
+
+
+        }else if (percentage >= 50) {
+
+            Log.d("meowat", "startNotification: 101");
+            String text = classString + " (" + percentageString +")";
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(view.getContext(), CHANNEL_ID)
+                    .setSmallIcon(R.drawable.notif_alarm)
+                    .setContentTitle("Close to Limit")
+                    .setContentText(text)
+                    .setStyle(new NotificationCompat.BigTextStyle()
+                            .bigText(text))
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(view.getContext());
+
+            notificationManager.notify(8, builder.build());
+            Log.d("meowat", "startNotification: 50");
+
+        }
+
+    }
+
+    private void createNotificationChannel(View view) {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is not in the Support Library.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "channel1";
+            String description = "channel1";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system. You can't change the importance
+            // or other notification behaviors after this.
+            NotificationManager notificationManager = view.getContext().getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
 }

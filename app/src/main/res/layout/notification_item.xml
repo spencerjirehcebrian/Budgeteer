@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_card"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        app:cardElevation="10dp"
+        app:cardCornerRadius="40dp"
+        android:layout_margin="10dp"
+
+        app:cardBackgroundColor="@color/white"
+        app:cardMaxElevation="12dp"
+        app:cardPreventCornerOverlap="true"
+        app:cardUseCompatPadding="false"
+
+        app:layout_constraintTop_toTopOf="parent"
+
+        app:layout_constraintLeft_toLeftOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/img_notif_logo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="110dp"
+                android:scaleType="centerInside"
+
+                android:src="@drawable/notif_alarm"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.core.widget.ContentLoadingProgressBar
+                android:id="@+id/progess"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="0dp"
+                android:layout_height="13dp"
+                android:layout_marginBottom="15dp"
+                android:max="100"
+                android:progress="50"
+
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:progressDrawable="@drawable/greenprogress2"
+                app:layout_constraintRight_toLeftOf="@+id/percentage_text"
+                app:layout_constraintLeft_toRightOf="@+id/img_notif_logo"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <TextView
+                android:id="@+id/percentage_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="100%"
+                android:textColor="#006784"
+                android:textAlignment="center"
+                android:textSize="17sp"
+                android:fontFamily="@font/poppinsbold"
+                android:layout_marginRight="50dp"
+                android:layout_marginBottom="5dp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+
+            <TextView
+                android:id="@+id/field_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Close to Limit:"
+                android:gravity="right"
+                android:textSize="17sp"
+                android:fontFamily="@font/poppinsmedium"
+                android:textColor="#006784"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="11dp"
+                app:layout_constraintLeft_toRightOf="@id/img_notif_logo"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+
+            <TextView
+                android:id="@+id/class_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Personal"
+                android:gravity="right"
+                android:textSize="15sp"
+                android:fontFamily="@font/poppinsbold"
+                android:textColor="#029C36"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="13.5dp"
+                app:layout_constraintLeft_toRightOf="@id/field_text"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_date"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            app:cardElevation="0dp"
+
+            app:strokeWidth="1dp"
+            app:strokeColor="#E0E0E0"
+
+
+            app:cardCornerRadius="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+
+            app:cardBackgroundColor="@color/white"
+            app:cardMaxElevation="0dp"
+            app:cardPreventCornerOverlap="true"
+            app:cardUseCompatPadding="false"
+
+            app:layout_constraintLeft_toLeftOf="@id/card_card"
+            app:layout_constraintTop_toBottomOf="@+id/card_card">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/img_cal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:scaleType="centerInside"
+
+                    android:src="@drawable/trans_cal"
+                    android:layout_marginLeft="20dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+
+                <TextView
+                    android:id="@+id/date_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3/28/2023"
+                    android:textAlignment="center"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/robotoregular"
+
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="20dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/img_cal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_time"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            app:cardElevation="0dp"
+
+            app:strokeWidth="1dp"
+            app:strokeColor="#E0E0E0"
+
+
+            app:cardCornerRadius="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+
+            app:cardBackgroundColor="@color/white"
+            app:cardMaxElevation="0dp"
+            app:cardPreventCornerOverlap="true"
+            app:cardUseCompatPadding="false"
+
+            app:layout_constraintLeft_toRightOf="@id/card_date"
+            app:layout_constraintTop_toBottomOf="@+id/card_card">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/time_text"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5:14 PM"
+                    android:textAlignment="center"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/robotoregular"
+
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+</LinearLayout>

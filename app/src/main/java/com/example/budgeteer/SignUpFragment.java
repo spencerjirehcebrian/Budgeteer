@@ -1,34 +1,65 @@
 package com.example.budgeteer;
 
+import static android.app.Activity.RESULT_OK;
+import static android.content.ContentValues.TAG;
+
+import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.ByteBuffer;
+
 public class SignUpFragment extends Fragment {
 
+    private static final int SELECT_PICTURE = 1;
     private TextInputLayout layoutFirstName, layoutLastName, layoutEmail,layoutPassword;
     private TextInputEditText inputFirstName, inputLastName, inputEmail,inputPassword;
 
+    private ImageButton profile_image_button;
+
+    private String selectedImagePath;
     private Button btnSignup;
 
     private InputValidation inputValidation;
     private DatabaseHelper databaseHelper;
     private User user;
 
+    private byte[] logoImage;
+
+    private Bitmap selectedImageBitmap;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.signup_fragment, container, false);
-
 
         layoutFirstName = v.findViewById(R.id.layout_signup_firstname);
         layoutLastName = v.findViewById(R.id.layout_signup_lastname);
@@ -39,19 +70,62 @@ public class SignUpFragment extends Fragment {
         inputFirstName = v.findViewById(R.id.signup_firstname);
         inputLastName = v.findViewById(R.id.signup_lastname);
         btnSignup = v.findViewById(R.id.next);
+        profile_image_button = v.findViewById(R.id.profile_image_button);
+
+        selectedImageBitmap =  BitmapFactory.decodeResource(getContext().getResources(), R.drawable.getstarted2_profilee);
+
 
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 postDataToSQLite();
+                profile_image_button.setImageResource(R.drawable.getstarted2_profilee);
             }
         });
+
+        profile_image_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(
+                        Intent.createChooser(intent, "Select Picture"),
+                        SELECT_PICTURE);
+            }
+        });
+
 
         databaseHelper = new DatabaseHelper(getActivity());
         user = new User();
 
         return v;
     }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == SELECT_PICTURE) {
+                Uri selectedImageUri = data.getData();
+
+                try {
+                    selectedImageBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImageUri);
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+                profile_image_button.setVisibility(View.VISIBLE);
+                profile_image_button.setImageBitmap(selectedImageBitmap);
+
+
+//
+//                selectedImagePath = selectedImageUri.toString();
+//
+//                profile_image_button.setImageURI(selectedImageUri);
+            }
+        }
+    }
+
 
 
     private void postDataToSQLite() {
@@ -99,17 +173,24 @@ public class SignUpFragment extends Fragment {
         if (withoutErrors()) {
 
             try{
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                selectedImageBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                logoImage = stream.toByteArray();
+
                 if (!databaseHelper.checkUser(email.trim())) {
                     user.setFirstName(firstname.trim());
                     user.setLastName(firstname.trim());
                     user.setEmail(email.trim());
                     user.setPassword(password.trim());
+                    user.setImage(logoImage);
+                    Log.d("mesa", "postDataToSQLite: " + logoImage);
                     databaseHelper.addUser(user);
-                    // Snack Bar to show success message that record saved successfully
-                    Toast.makeText(getActivity(), "Account Created", Toast.LENGTH_SHORT).show();
+
                     emptyInputEditText();
+                    showSuccessDialog();
+
                 } else {
-                    // Snack Bar to show error message that record already exists
+
                     Toast.makeText(getActivity(), "Account Already Registered to Another User", Toast.LENGTH_SHORT).show();
                 }
             } catch (Exception e) {
@@ -156,6 +237,26 @@ public class SignUpFragment extends Fragment {
     boolean isEmailValid(CharSequence email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email)
                 .matches();
+    }
+
+    private void showSuccessDialog(){
+        //Toast.makeText(getActivity(), "Account Created", Toast.LENGTH_SHORT).show();
+
+        LayoutInflater li = LayoutInflater.from(getActivity());
+        View promptsView = li.inflate(R.layout.prompt_account_created, null);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                getActivity());
+
+        // set prompts.xml to alertdialog builder
+        alertDialogBuilder.setView(promptsView);
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
+
     }
 
 }

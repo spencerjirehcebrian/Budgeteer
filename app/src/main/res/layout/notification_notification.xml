@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:android="http://schemas.android.com/apk/res/android">
+
+<ImageView
+    android:id="@+id/img_notif_logo"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="110dp"
+    android:scaleType="centerInside"
+
+    android:src="@drawable/notif_alarm"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    android:layout_marginLeft="15dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+<TextView
+    android:id="@+id/percentage_text"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="100%"
+    android:textColor="#006784"
+    android:textAlignment="center"
+    android:textSize="17sp"
+    android:fontFamily="@font/poppinsbold"
+    android:layout_marginLeft="200dp"
+    android:layout_marginTop="35dp"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    />
+
+<TextView
+    android:id="@+id/field_text"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Close to Limit:"
+    android:gravity="right"
+    android:textSize="17sp"
+    android:fontFamily="@font/poppinsmedium"
+    android:textColor="#006784"
+    android:layout_marginLeft="70dp"
+    android:layout_marginTop="11dp"
+    />
+
+<TextView
+    android:id="@+id/class_text"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Personal"
+    android:gravity="right"
+    android:textSize="15sp"
+    android:fontFamily="@font/poppinsbold"
+    android:textColor="#029C36"
+    android:layout_marginLeft="200dp"
+    android:layout_marginTop="13.5dp"
+    app:layout_constraintLeft_toRightOf="@id/field_text"
+    app:layout_constraintTop_toTopOf="parent"/>
+
+
+</RelativeLayout>

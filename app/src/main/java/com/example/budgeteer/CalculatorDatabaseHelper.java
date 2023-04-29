@@ -69,7 +69,7 @@ public class CalculatorDatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_BUDGET_EXPENSES, budget.getExpenses());
         // Inserting Row
         db.insert(TABLE_BUDGET, null, values);
-        db.close();
+        //db.close();
     }
     /**
      * This method is to fetch all user and return the list of user records
@@ -125,9 +125,46 @@ public class CalculatorDatabaseHelper extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         cursor.close();
-        db.close();
+        //db.close();
         // return user list
         return budgetList;
+    }
+
+    public Integer getTopID () {
+        // array of columns to fetch
+        String[] columns = {
+                COLUMN_BUDGET_ID,
+                COLUMN_BUDGET_USER_EMAIL,
+                COLUMN_BUDGET_CLASS,
+                COLUMN_BUDGET_MAX,
+                COLUMN_BUDGET_EXPENSES,
+        };
+//        // sorting orders
+//        String sortOrder =
+//                COLUMN_BUDGET_USER_EMAIL + " ASC";
+        ArrayList<Budget> budgetList = new ArrayList<Budget>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.execSQL(CREATE_BUDGET_TABLE);
+
+        String selection =  COLUMN_BUDGET_USER_EMAIL + "=?";
+        // query the user table
+        /**
+         * Here query function is used to fetch records from user table this function works like we use sql query.
+         * SQL query equivalent to this query function is
+         * SELECT user_id,user_name,user_email,user_password FROM user ORDER BY user_name;
+         */
+
+        String querySel = "SELECT MAX(budget_id) FROM budget;";
+        Cursor cursor = db.rawQuery(querySel, null);
+
+        Integer returnValue = 0;
+
+        if (cursor.moveToFirst()) returnValue = cursor.getInt(0);
+
+        cursor.close();
+        //db.close();
+        // return user list
+        return returnValue;
     }
     /**
      * This method to update user record
@@ -147,7 +184,7 @@ public class CalculatorDatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_BUDGET_EXPENSES, budget.getExpenses());
         // updating row
         db.update(TABLE_BUDGET, values, COLUMN_BUDGET_ID + " = ? ", budgetIDString);
-        db.close();
+        //db.close();
     }
     /**
      * This method is to delete user record
@@ -159,7 +196,7 @@ public class CalculatorDatabaseHelper extends SQLiteOpenHelper {
         // delete user record by id
         db.delete(TABLE_BUDGET, COLUMN_BUDGET_ID + " = ?",
                 new String[]{String.valueOf(budget.getId())});
-        db.close();
+        //db.close();
     }
     /**
      * This method to check user exist or not
@@ -167,12 +204,13 @@ public class CalculatorDatabaseHelper extends SQLiteOpenHelper {
      * @param email
      * @return true/false
      */
-    public boolean checkUser(String email) {
+    public boolean checkBudgetExist(String email) {
         // array of columns to fetch
         String[] columns = {
                 COLUMN_BUDGET_ID
         };
         SQLiteDatabase db = this.getReadableDatabase();
+        db.execSQL(CREATE_BUDGET_TABLE);
         // selection criteria
         String selection = COLUMN_BUDGET_USER_EMAIL + " = ?";
         // selection argument
@@ -192,7 +230,7 @@ public class CalculatorDatabaseHelper extends SQLiteOpenHelper {
                 null);                      //The sort order
         int cursorCount = cursor.getCount();
         cursor.close();
-        db.close();
+        //db.close();
         //TODO: add the return budgets here
         if (cursorCount > 0) {
             return true;

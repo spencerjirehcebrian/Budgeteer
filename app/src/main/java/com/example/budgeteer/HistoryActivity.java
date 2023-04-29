@@ -15,6 +15,7 @@ import com.example.budgeteer.NotificationFragment;
 public class HistoryActivity extends AppCompatActivity{
 
     private FragmentTransaction fragmentTransaction;
+
     private Button btn_noti, btn_trans;
 
     private ImageButton btn_back;

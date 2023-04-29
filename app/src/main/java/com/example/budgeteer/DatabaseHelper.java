@@ -24,10 +24,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_USER_LAST_NAME = "last_name";
     private static final String COLUMN_USER_EMAIL = "user_email";
     private static final String COLUMN_USER_PASSWORD = "user_password";
+
+    private static final String COLUMN_USER_IMAGE= "user_image";
     // create table sql query
     private String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_USER + "("
             + COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_USER_FIRST_NAME + " TEXT," + COLUMN_USER_LAST_NAME + " TEXT,"
-            + COLUMN_USER_EMAIL + " TEXT," + COLUMN_USER_PASSWORD + " TEXT" + ")";
+            + COLUMN_USER_EMAIL + " TEXT," + COLUMN_USER_PASSWORD + " TEXT," + COLUMN_USER_IMAGE + " BLOB" + ")";
     // drop table sql query
     private String DROP_USER_TABLE = "DROP TABLE IF EXISTS " + TABLE_USER;
     /**
@@ -61,6 +63,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_USER_LAST_NAME, user.getLastName());
         values.put(COLUMN_USER_EMAIL, user.getEmail());
         values.put(COLUMN_USER_PASSWORD, user.getPassword());
+        values.put(COLUMN_USER_IMAGE, user.getImage());
         // Inserting Row
         db.insert(TABLE_USER, null, values);
         db.close();
@@ -78,7 +81,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COLUMN_USER_FIRST_NAME,
                 COLUMN_USER_LAST_NAME,
                 COLUMN_USER_EMAIL,
-                COLUMN_USER_PASSWORD
+                COLUMN_USER_PASSWORD,
+                COLUMN_USER_IMAGE
         };
         // sorting orders
         String sortOrder =
@@ -108,6 +112,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 user.setLastName(cursor.getString(cursor.getColumnIndex(COLUMN_USER_LAST_NAME)));
                 user.setEmail(cursor.getString(cursor.getColumnIndex(COLUMN_USER_EMAIL)));
                 user.setPassword(cursor.getString(cursor.getColumnIndex(COLUMN_USER_PASSWORD)));
+                user.setImage(cursor.getBlob(cursor.getColumnIndex(COLUMN_USER_IMAGE)));
                 // Adding user record to list
                 userList.add(user);
             } while (cursor.moveToNext());
@@ -117,6 +122,64 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // return user list
         return userList;
     }
+
+    /**
+     * This method is to fetch all user and return the list of user records
+     *
+     * @return list
+     */
+    @SuppressLint("Range")
+    public List<User> getUser(String emailSearch) {
+        String[] emailString = new String[]{String.valueOf(emailSearch)};
+        // array of columns to fetch
+        String[] columns = {
+                COLUMN_USER_ID,
+                COLUMN_USER_FIRST_NAME,
+                COLUMN_USER_LAST_NAME,
+                COLUMN_USER_EMAIL,
+                COLUMN_USER_PASSWORD,
+                COLUMN_USER_IMAGE
+        };
+        List<User> userList = new ArrayList<User>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        // query the user table
+        /**
+         * Here query function is used to fetch records from user table this function works like we use sql query.
+         * SQL query equivalent to this query function is
+         * SELECT user_id,user_name,user_email,user_password FROM user ORDER BY user_name;
+         */
+        Cursor cursor1 = db.query(TABLE_USER, //Table to query
+                columns,    //columns to return
+                null,        //columns for the WHERE clause
+                null,        //The values for the WHERE clause
+                null,       //group the rows
+                null,       //filter by row groups
+                null); //The sort order
+        // Traversing through all rows and adding to list
+
+        String querySel = "SELECT * FROM user WHERE user_email = '"+emailSearch+"';";
+        Cursor cursor = db.rawQuery(querySel, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                User user = new User();
+                user.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_USER_ID))));
+                //user.setName(cursor.getString(cursor.getColumnIndex(COLUMN_USER_NAME)));
+                user.setFirstName(cursor.getString(cursor.getColumnIndex(COLUMN_USER_FIRST_NAME)));
+                user.setLastName(cursor.getString(cursor.getColumnIndex(COLUMN_USER_LAST_NAME)));
+                user.setEmail(cursor.getString(cursor.getColumnIndex(COLUMN_USER_EMAIL)));
+                user.setPassword(cursor.getString(cursor.getColumnIndex(COLUMN_USER_PASSWORD)));
+                user.setImage(cursor.getBlob(cursor.getColumnIndex(COLUMN_USER_IMAGE)));
+                // Adding user record to list
+                userList.add(user);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        //db.close();
+        // return user list
+        return userList;
+    }
+
     /**
      * This method to update user record
      *
@@ -129,6 +192,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_USER_LAST_NAME, user.getLastName());
         values.put(COLUMN_USER_EMAIL, user.getPassword());
         values.put(COLUMN_USER_PASSWORD, user.getPassword());
+        values.put(COLUMN_USER_IMAGE, user.getImage());
         // updating row
         db.update(TABLE_USER, values, COLUMN_USER_ID + " = ?",
                 new String[]{String.valueOf(user.getId())});

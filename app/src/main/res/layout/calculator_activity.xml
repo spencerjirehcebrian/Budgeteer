@@ -134,6 +134,72 @@
         </TextView>
     </FrameLayout>
 
+    <!-- lololo -->
+    <ImageView
+        android:id="@+id/empty_logo"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+
+        app:layout_constraintRight_toRightOf="@id/right_guideline"
+        app:layout_constraintLeft_toLeftOf="@id/left_guideline"
+        app:layout_constraintBottom_toBottomOf="@+id/textView1"
+
+        android:src="@drawable/calc_empty_logo"
+        android:scaleType="fitCenter"
+
+        android:layout_marginBottom="20dp"
+
+        />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:clickable="false"
+        android:text="You don´t have any existing budget  yet "
+        android:textSize="15sp"
+        android:fontFamily="@font/montserratregular"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/lyt_btn"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="20dp"
+        >
+    </TextView>
+
+    <FrameLayout
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/img_rect"
+
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="150dp"
+        android:id="@+id/lyt_btn"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+        <ImageButton
+            android:id="@+id/add_btn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:background="#00FFFFFF"
+            android:src="@drawable/getstarted_rectangle2">
+        </ImageButton>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:clickable="false"
+            android:text="Add Budget"
+            android:textSize="20sp"
+            android:fontFamily="@font/montserratregular">
+        </TextView>
+    </FrameLayout>
+
 
 
 

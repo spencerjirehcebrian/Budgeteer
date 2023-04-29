@@ -56,7 +56,6 @@ public class LogInFragment extends Fragment {
             });
 
             databaseHelper = new DatabaseHelper(getActivity());
-            inputValidation = new InputValidation(getActivity());
 
             loginPreferences = this.getContext().getSharedPreferences("loginPrefs", MODE_PRIVATE);
             loginPrefsEditor = loginPreferences.edit();
@@ -105,9 +104,11 @@ public class LogInFragment extends Fragment {
                     loginPrefsEditor.putBoolean("saveLogin", true);
                     loginPrefsEditor.putString("username", email);
                     loginPrefsEditor.putString("password", password);
+                    loginPrefsEditor.putBoolean("useNotif", true);
                     loginPrefsEditor.commit();
                 } else {
                     loginPrefsEditor.clear();
+                    loginPrefsEditor.putBoolean("useNotif", true);
                     loginPrefsEditor.commit();
                 }
 

@@ -22,9 +22,12 @@
 
     <ImageButton
         android:id="@+id/profile_image_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
         android:layout_marginTop="15dp"
+
+        android:scaleType="centerInside"
+
 
         android:src="@drawable/getstarted2_profilee"
 
@@ -32,7 +35,8 @@
 
         app:layout_constraintLeft_toLeftOf="@+id/left_guideline"
         app:layout_constraintRight_toRightOf="@+id/right_guideline"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/textView3"/>
 
     <TextView
         android:id="@+id/textView3"

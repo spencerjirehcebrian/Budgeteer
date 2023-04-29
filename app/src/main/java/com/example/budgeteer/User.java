@@ -11,6 +11,8 @@ public class User {
     private String email;
     private String password;
 
+    private byte[] image;
+
     public int getId() {
         return id;
     }
@@ -48,5 +50,13 @@ public class User {
 
     public void setLastName(String lastname) {
         this.lastname = lastname;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 }
